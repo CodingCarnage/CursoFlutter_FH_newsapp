@@ -22,7 +22,8 @@ class _Navigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _NavigationModel navigationModel = Provider.of<_NavigationModel>(context);
+    final _NavigationModel navigationModel =
+        Provider.of<_NavigationModel>(context);
 
     return BottomNavigationBar(
       currentIndex: navigationModel.currentPage,
@@ -46,7 +47,11 @@ class _Pages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _NavigationModel navigationModel =
+        Provider.of<_NavigationModel>(context);
+
     return PageView(
+      controller: navigationModel.pageController,
       //physics: BouncingScrollPhysics(),
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
@@ -64,10 +69,19 @@ class _Pages extends StatelessWidget {
 class _NavigationModel with ChangeNotifier {
   int _currentPage = 0;
 
+  PageController _pageController = new PageController();
+
   int get currentPage => this._currentPage;
 
   set currentPage(int value) {
     this._currentPage = value;
+    this._pageController.animateToPage(
+          value,
+          duration: Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+        );
     notifyListeners();
   }
+
+  PageController get pageController => this._pageController;
 }
