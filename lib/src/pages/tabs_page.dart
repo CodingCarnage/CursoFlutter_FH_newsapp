@@ -6,17 +6,45 @@ class TabsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        physics: BouncingScrollPhysics(),
-        children: <Widget>[
-          Container(
-            color: Colors.red,
-          ),
-          Container(
-            color: Colors.green,
-          ),
-        ],
-      )
+      body: _Pages(),
+      bottomNavigationBar: _Navigation(),
+    );
+  }
+}
+
+class _Navigation extends StatelessWidget {
+  const _Navigation({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: 0,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline), label: 'For you'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline), label: 'Headers'),
+      ],
+    );
+  }
+}
+
+class _Pages extends StatelessWidget {
+  const _Pages({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      //physics: BouncingScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
+      children: <Widget>[
+        Container(
+          color: Colors.red,
+        ),
+        Container(
+          color: Colors.green,
+        ),
+      ],
     );
   }
 }
