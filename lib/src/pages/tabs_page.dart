@@ -22,8 +22,7 @@ class _Navigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _NavigationModel navigationModel =
-        Provider.of<_NavigationModel>(context);
+    final _NavigationModel navigationModel = Provider.of<_NavigationModel>(context);
 
     return BottomNavigationBar(
       currentIndex: navigationModel.currentPage,
@@ -47,8 +46,7 @@ class _Pages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _NavigationModel navigationModel =
-        Provider.of<_NavigationModel>(context);
+    final _NavigationModel navigationModel = Provider.of<_NavigationModel>(context);
 
     return PageView(
       controller: navigationModel.pageController,
