@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/src/pages/tab1_page.dart';
 
 import 'package:provider/provider.dart';
+
+import 'package:newsapp/src/pages/tab1_page.dart';
 
 class TabsPage extends StatelessWidget {
   const TabsPage({Key key}) : super(key: key);
