@@ -35,7 +35,7 @@ class _Navigation extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
-          label: 'Headers',
+          label: 'Headlines',
         ),
       ],
     );
