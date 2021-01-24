@@ -15,6 +15,8 @@ class NewsService with ChangeNotifier {
   
   String _selectedCategory = 'business';
 
+  bool _isLoading = true;
+
   List<Category> categories = [
     Category(FontAwesomeIcons.building, 'business'),
     Category(FontAwesomeIcons.tv, 'entertainment'),
@@ -31,16 +33,23 @@ class NewsService with ChangeNotifier {
     this.getTopHeadlines();
 
     categories.forEach((item) { 
-      this.categoryArticles[item.name] = List();
+      this.categoryArticles[item.name] = new List();
     });
+
+    this.getArticlesByCategory( this._selectedCategory );
   }
+
+  bool get isLoading => this._isLoading;
 
   get selectedCategory => this._selectedCategory;
   set selectedCategory(String value) {
     this._selectedCategory = value;
+    this._isLoading = true;
     this.getArticlesByCategory(value);
     notifyListeners();
   }
+
+  List<Article> get articleFromSelectedCategory => this.categoryArticles[this.selectedCategory];
 
   getTopHeadlines() async {
     final String url = '$_URL_NEWSAPI/top-headlines?apiKey=$_APIKEY&country=mx';
@@ -54,6 +63,8 @@ class NewsService with ChangeNotifier {
 
   getArticlesByCategory(String category) async {
     if (this.categoryArticles[category].length > 0) {
+      this._isLoading = false;
+      notifyListeners();
       return this.categoryArticles[category];
     }
     
@@ -63,6 +74,7 @@ class NewsService with ChangeNotifier {
     final NewsResponse newsResponse = newsResponseFromJson(response.body);
 
     this.categoryArticles[category].addAll(newsResponse.articles);
+    this._isLoading = false;
     notifyListeners();
   }
 }
