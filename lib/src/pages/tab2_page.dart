@@ -9,13 +9,16 @@ class Tab2Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Category> categories = Provider.of<NewsService>(context).categories;
+    final List<Category> categories =
+        Provider.of<NewsService>(context).categories;
 
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: <Widget>[
-            Expanded(child: _ListCategories(categories: categories)),
+            Expanded(
+              child: _ListCategories(categories: categories),
+            ),
           ],
         ),
       ),
@@ -26,7 +29,7 @@ class Tab2Page extends StatelessWidget {
 class _ListCategories extends StatelessWidget {
   const _ListCategories({
     Key key,
-    @required this.categories
+    @required this.categories,
   }) : super(key: key);
 
   final List<Category> categories;
@@ -42,13 +45,44 @@ class _ListCategories extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              Icon(categories[index].icon),
+              _CategoryButton(category: categories[index]),
               const SizedBox(height: 5.0),
-              Text(categories[index].name),
+              Text('${categories[index].name[0].toUpperCase()}${categories[index].name.substring(1)}'),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class _CategoryButton extends StatelessWidget {
+  const _CategoryButton({
+    Key key,
+    @required this.category,
+  }) : super(key: key);
+
+  final Category category;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        print('${category.name}');
+      },
+      child: Container(
+        width: 40.0,
+        height: 40.0,
+        margin: const EdgeInsets.symmetric(horizontal: 10.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+        ),
+        child: Icon(
+          category.icon,
+          color: Colors.black54,
+        ),
+      ),
     );
   }
 }
