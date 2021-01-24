@@ -12,6 +12,8 @@ const _APIKEY = '9e775723f8ce4846b31548faac0703b1';
 
 class NewsService with ChangeNotifier {
   List<Article> headlines = [];
+  
+  String _selectedCategory = 'business';
 
   List<Category> categories = [
     Category(FontAwesomeIcons.building, 'business'),
@@ -23,8 +25,21 @@ class NewsService with ChangeNotifier {
     Category(FontAwesomeIcons.memory, 'technology'),
   ];
 
+  Map<String, List<Article>> categoryArticles = {};
+
   NewsService () {
     this.getTopHeadlines();
+
+    categories.forEach((item) { 
+      this.categoryArticles[item.name] = List();
+    });
+  }
+
+  get selectedCategory => this._selectedCategory;
+  set selectedCategory(String value) {
+    this._selectedCategory = value;
+    this.getArticlesByCategory(value);
+    notifyListeners();
   }
 
   getTopHeadlines() async {
@@ -34,6 +49,20 @@ class NewsService with ChangeNotifier {
     final NewsResponse newsResponse = newsResponseFromJson(response.body);
 
     this.headlines.addAll(newsResponse.articles);
+    notifyListeners();
+  }
+
+  getArticlesByCategory(String category) async {
+    if (this.categoryArticles[category].length > 0) {
+      return this.categoryArticles[category];
+    }
+    
+    final String url = '$_URL_NEWSAPI/top-headlines?apiKey=$_APIKEY&category=$category&country=mx';
+    final http.Response response = await http.get(url);
+
+    final NewsResponse newsResponse = newsResponseFromJson(response.body);
+
+    this.categoryArticles[category].addAll(newsResponse.articles);
     notifyListeners();
   }
 }
